@@ -1,0 +1,14 @@
+[Unit]
+Description=Elastalert
+After=elasticsearch.service
+
+[Service]
+Type=simple
+User=<%= @user %>
+Group=<%= @group %>
+Restart=on-failure
+WorkingDirectory=<%= @install_dir %>
+ExecStart=<%= @install_dir %>/<%= @virtualenv %>/elastalert  --config <%=@config_dir %>/<%= @config_file %>
+
+[Install]
+WantedBy=multi-user.target

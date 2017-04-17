@@ -1,0 +1,32 @@
+{
+  "name": "dschaaff-elastalert",
+  "version": "0.0.1",
+  "author": "Daniel Schaaff",
+  "summary": "Install and Configure Elastalert",
+  "license": "MIT",
+  "source": "",
+  "project_page": "",
+  "issues_url": "",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 1.0.0"
+    },
+    {
+      "name": "puppetlabs-vcsrepo",
+      "version_requirement": ">= 1.5.0"
+    },
+    {
+      "name": "stankevich-python",
+      "version_requirement": ">= 1.18.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
+    }
+  ]
+}
