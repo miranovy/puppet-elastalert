@@ -28,9 +28,11 @@ class elastalert (
   Optional[String] $es_url_prefix = $elastalert::params::es_url_prefix,
   Boolean $use_ssl                = $elastalert::params::use_ssl,
   Boolean $verify_certs           = $elastalert::params::verify_certs,
+  Boolean $proxy           = $elastalert::params::verify_certs,
   String $es_send_get_body_as     = $elastalert::params::es_send_get_body_as,
   Optional[String] $es_username   = $elastalert::params::es_username,
   Optional[String] $es_password   = $elastalert::params::es_password,
+  Optional[String] $pip_proxy     = $elastalert::params::pip_proxy,
   String $alert_time_limit        = $elastalert::params::alert_time_limit,
 )inherits ::elastalert::params
 {
