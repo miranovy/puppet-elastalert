@@ -26,4 +26,5 @@ class elastalert::params {
   $es_url_prefix       = undef
   $es_username         = undef
   $es_password         = undef
+  $pip_proxy           = undef
 }

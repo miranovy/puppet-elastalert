@@ -15,6 +15,7 @@ class elastalert::install (
   $elasticsearch_vers = $::elastalert::elasticsearch_vers,
   $elasticsearch_host = $::elastalert::elasticsearch_host,
   $elasticsearch_port = $::elastalert::elasticsearch_port,
+  $pip_proxy          = $::elastalert::pip_proxy,
   ){
 
   group { $group:
@@ -82,6 +83,12 @@ class elastalert::install (
     ]
   }
 
+  $proxy_flag = $pip_proxy ? {
+    undef   => false,
+    default => $pip_proxy
+  }
+
+
   python::requirements {"${install_dir}/src/requirements.txt":
     virtualenv => "${install_dir}/${virtualenv}",
     owner      => $user,
@@ -91,11 +98,12 @@ class elastalert::install (
 
   # needed to work around errors in the requirements file
   python::pip { 'requests-oauthlib':
-    ensure => '0.5.0',
+    ensure     => '0.5.0',
     virtualenv => "${install_dir}/${virtualenv}",
     owner      => $user,
     group      => $group,
     pkgname    => 'requests-oauthlib',
+    proxy     => $proxy_flag,
   }
 
   python::pip { 'requests':
@@ -104,6 +112,7 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'requests',
+    proxy     => $proxy_flag,
   }
 
   python::pip {'elasticsearch':
@@ -112,6 +121,7 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'elasticsearch',
+    proxy     => $proxy_flag,
   }
 
   # create elasticsearch index
