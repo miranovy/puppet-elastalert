@@ -18,6 +18,11 @@ class elastalert::install (
   $pip_proxy          = $::elastalert::pip_proxy,
   ){
 
+  $proxy_flag = $pip_proxy ? {
+    undef   => false,
+    default => $pip_proxy
+  }
+
   group { $group:
     ensure => present,
   }
@@ -64,10 +69,11 @@ class elastalert::install (
   }
 
   python::virtualenv {"${install_dir}/${virtualenv}":
-    ensure => present,
-    owner  => $user,
-    group  => $group,
-    cwd    => $install_dir,
+    ensure  => present,
+    owner   => $user,
+    group   => $group,
+    cwd     => $install_dir,
+    proxy   => $proxy_flag,
     require => File[$install_dir]
   }
 
@@ -83,12 +89,6 @@ class elastalert::install (
     ]
   }
 
-  $proxy_flag = $pip_proxy ? {
-    undef   => false,
-    default => $pip_proxy
-  }
-
-
   python::requirements {"${install_dir}/src/requirements.txt":
     virtualenv => "${install_dir}/${virtualenv}",
     owner      => $user,
@@ -103,16 +103,16 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'requests-oauthlib',
-    proxy     => $proxy_flag,
+    proxy      => $proxy_flag,
   }
 
   python::pip { 'requests':
-    ensure => '2.2.1',
+    ensure     => '2.2.1',
     virtualenv => "${install_dir}/${virtualenv}",
     owner      => $user,
     group      => $group,
     pkgname    => 'requests',
-    proxy     => $proxy_flag,
+    proxy      => $proxy_flag,
   }
 
   python::pip {'elasticsearch':
@@ -121,7 +121,7 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'elasticsearch',
-    proxy     => $proxy_flag,
+    proxy      => $proxy_flag,
   }
 
   # create elasticsearch index
@@ -130,5 +130,6 @@ class elastalert::install (
     path    => $facts['path'],
     user    => $user,
     unless  => "curl -XHEAD '${elasticsearch_host}:${elasticsearch_port}/elastalert_status?pretty' | grep '200 OK'",
+    require => Exec['setup.py'],
   }
 }
