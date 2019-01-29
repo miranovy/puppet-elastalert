@@ -18,6 +18,8 @@ class elastalert::config (
   $verify_certs        = $elastalert::verify_certs,
   $es_send_get_body_as = $elastalert::es_send_get_body_as,
   $alert_time_limit    = $elastalert::alert_time_limit,
+  $run_every           = $elastalert::run_every,
+  $buffer_time         = $elastalert::buffer_time,
   )
 {
 
