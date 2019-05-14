@@ -8,7 +8,7 @@ User=<%= @user %>
 Group=<%= @group %>
 Restart=on-failure
 WorkingDirectory=<%= @install_dir %>
-ExecStart=<%= @install_dir %>/<%= @virtualenv %>/elastalert  --config <%=@config_dir %>/<%= @config_file %>
+ExecStart=<%= @install_dir %>/<%= @virtualenv %>/bin/elastalert  --config <%=@config_dir %>/<%= @config_file %>
 
 [Install]
 WantedBy=multi-user.target

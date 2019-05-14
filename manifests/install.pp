@@ -81,7 +81,7 @@ class elastalert::install (
     command => "${install_dir}/${virtualenv}/bin/python ${install_dir}/src/setup.py install",
     path    => "${install_dir}/${virtualenv}/bin:${::path}",
     creates => "${install_dir}/${virtualenv}/bin/elastalert",
-    cwd     => $install_dir,
+    cwd     => "${install_dir}/src",
     user    => $user,
     require => [
       Vcsrepo["${install_dir}/src"],
@@ -98,7 +98,7 @@ class elastalert::install (
 
   # needed to work around errors in the requirements file
   python::pip { 'requests-oauthlib':
-    ensure     => '0.5.0',
+    ensure     => '0.6.1',
     virtualenv => "${install_dir}/${virtualenv}",
     owner      => $user,
     group      => $group,
@@ -107,7 +107,7 @@ class elastalert::install (
   }
 
   python::pip { 'requests':
-    ensure     => '2.2.1',
+    ensure     => '2.10.0',
     virtualenv => "${install_dir}/${virtualenv}",
     owner      => $user,
     group      => $group,
@@ -129,7 +129,7 @@ class elastalert::install (
     command => "${install_dir}/${virtualenv}/bin/elastalert-create-index -h ${elasticsearch_host} -p ${elasticsearch_port}",
     path    => $facts['path'],
     user    => $user,
-    unless  => "curl -XHEAD '${elasticsearch_host}:${elasticsearch_port}/elastalert_status?pretty' | grep '200 OK'",
+    unless  => "curl -I -XHEAD '${elasticsearch_host}:${elasticsearch_port}/elastalert_status?pretty' | grep '200 OK'",
     require => Exec['setup.py'],
   }
 }
