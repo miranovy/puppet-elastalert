@@ -18,11 +18,6 @@ class elastalert::install (
   $pip_proxy          = $::elastalert::pip_proxy,
   ){
 
-  $proxy_flag = $pip_proxy ? {
-    undef   => false,
-    default => $pip_proxy
-  }
-
   group { $group:
     ensure => present,
   }
@@ -73,7 +68,7 @@ class elastalert::install (
     owner   => $user,
     group   => $group,
     cwd     => $install_dir,
-    proxy   => $proxy_flag,
+    proxy   => $pip_proxy,
     require => File[$install_dir]
   }
 
@@ -103,7 +98,7 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'requests-oauthlib',
-    proxy      => $proxy_flag,
+    proxy      => $pip_proxy,
   }
 
   python::pip { 'requests':
@@ -112,7 +107,7 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'requests',
-    proxy      => $proxy_flag,
+    proxy      => $pip_proxy,
   }
 
   python::pip {'elasticsearch':
@@ -121,7 +116,7 @@ class elastalert::install (
     owner      => $user,
     group      => $group,
     pkgname    => 'elasticsearch',
-    proxy      => $proxy_flag,
+    proxy      => $pip_proxy,
   }
 
   # create elasticsearch index
